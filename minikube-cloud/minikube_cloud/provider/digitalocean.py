@@ -1,10 +1,12 @@
 import logging
+import time
+import sys
 
 import digitalocean
 
 logger = logging.getLogger(__name__)
 
-def setup_vm(config, credentials, user_data):
+def setup(config, credentials, user_data):
     droplet = digitalocean.Droplet(
             token=credentials['token'],
             name=config['name'],
@@ -15,7 +17,13 @@ def setup_vm(config, credentials, user_data):
             user_data= user_data,
             backups=False
         )
-    droplet.create()
+    try:
+        droplet.create()
+    except digitalocean.DataReadError as err:
+        logger.info("Droplet creation failed.")
+        logger.fatal("Error : %s", err)
+        sys.exit(1)
+
     actions = droplet.get_actions()
     for action in actions:
         action.load()
@@ -25,16 +33,26 @@ def setup_vm(config, credentials, user_data):
 
     while True:
         if state == 'completed':
-            print ("Droplet is active")
-            print (state)
+            logger.info("Droplet is active")
             break
-        print ("Waiting for 2 sec. Dropet not ready yet.")
+        logger.info("Waiting for 2 sec. Droplet not ready yet.")
         time.sleep(2)
         actions = droplet.get_actions()
         for action in actions:
             action.load()
             # Once it shows complete, droplet is up and running
             state =  action.status
+    logger.info("Droplet id is: %s", droplet.id)
 
-def test(input):
+    logger.info("Wating for 20 seconds for host to be up")
+    time.sleep(20)
+    # Todo: Need to find a better way to know,
+    # when load will return ip address instead of 20 second sleep
+    load = droplet.load()
+    ndroplet = digitalocean.Droplet(load.id, credentials['token'])
+    logger.info("ip address for vm is: %s", load.ip_address)
+    logger.info("Use: scp root@%s:/var/lib/minikube/kubeconfig config.", load.ip_address)
+
+
+def test(config, credentials, user_data):
     logger.info("Able to spin-up vms in digitalocean")

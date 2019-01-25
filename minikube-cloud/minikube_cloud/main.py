@@ -13,10 +13,9 @@ from .provider import aws
 logger = logging.getLogger(__name__)
 
 PROVIDER_MAP = {
-        'digitalocean' : digitalocean.test,
-        'aws' : aws.test,
+        'digitalocean' : digitalocean.setup,
+        'aws' : aws.stub,
     }
-
 
 def get_user_data(template_path, kubectl_version, minikube_version):
     user_data_file = open(template_path, 'r')
@@ -60,8 +59,7 @@ def main():
         user_cfg['minikube_version'],
         )
     provider = PROVIDER_MAP[args.cloud]
-    provider(user_data)
-    # create_vm(user_cfg, credentials, user_data)
+    provider(user_cfg, credentials, user_data)
 
 
 if __name__ == "__main__":

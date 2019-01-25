@@ -5,5 +5,5 @@ apt-get install -y socat docker.io
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/{{ minikube_version }}/minikube-linux-amd64 && chmod +x minikube && mv minikube /usr/local/bin/minikube
 minikube config set embed-certs true
 minikube start --vm-driver none
-mkdir -p ~/.kube
-cp /var/lib/minikube/kubeconfig ~/.kube/config
+mkdir -p /root/.kube
+cp /var/lib/minikube/kubeconfig /root/.kube/config
