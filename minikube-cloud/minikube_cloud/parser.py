@@ -47,8 +47,4 @@ def get_argparser():
         )
 
     args = parser.parse_args()
-
-    # logger.debug('Profile: %s', args.profile)
-    # logger.debug('Name: %s', args.name)
-
     return args
