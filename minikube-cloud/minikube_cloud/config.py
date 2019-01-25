@@ -18,7 +18,6 @@ def get_config(profile):
     '''
     home_dir = os.getenv('HOME')
     config = credentials = configparser.ConfigParser()
-    logger.debug("Get config for %s", profile)
 
     config.read(os.path.join(home_dir, ".config", "minikube-cloud", "config.ini"))
     credentials.read(os.path.join(home_dir, ".config", "minikube-cloud", "credentials.ini"))
@@ -36,7 +35,6 @@ def get_config(profile):
         sys.exit(1)
         return ""
 
-    logger.debug("ssh id is : %s", config[profile]['ssh_id'])
     return config[profile], credentials[profile]
 
 

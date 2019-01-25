@@ -37,5 +37,4 @@ def setup_vm(config, credentials, user_data):
             state =  action.status
 
 def test(input):
-    logger.debug("Able to spinup instances in aws")
-    # logger.debug("user data is : %s", input)
+    logger.info("Able to spinup instances in aws")

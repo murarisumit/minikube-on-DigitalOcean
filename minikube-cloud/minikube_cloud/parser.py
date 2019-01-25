@@ -28,6 +28,7 @@ def get_argparser():
             '-c',
             type=str,
             dest='cloud',
+            default='digitalocean',
             choices=main.PROVIDER_MAP.keys(),
             help="name of the cloud provider"
         )
@@ -35,20 +36,19 @@ def get_argparser():
     parser.add_argument(
             '-v',
             '--verbose',
-            type=str,
-            help="Set verbosity on for "
+            action="store_true",
+            help="set verbosity on"
         )
 
     parser.add_argument(
-            '-V',
             '--version',
             action='version',
             version="%(prog)s " + version.__version__
         )
 
     args = parser.parse_args()
-    logger.debug('Profile is : %s', args.profile)
-    logger.debug('Name is : %s', args.name)
+
+    # logger.debug('Profile: %s', args.profile)
+    # logger.debug('Name: %s', args.name)
 
     return args
-

@@ -36,5 +36,5 @@ def setup_vm(config, credentials, user_data):
             # Once it shows complete, droplet is up and running
             state =  action.status
 
-def test():
-    logger.debug("Able to spin-up vms in digitalocean")
+def test(input):
+    logger.info("Able to spin-up vms in digitalocean")

@@ -10,7 +10,6 @@ from . import parser
 from .provider import digitalocean
 from .provider import aws
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 PROVIDER_MAP = {
@@ -34,19 +33,26 @@ def get_user_data(template_path, kubectl_version, minikube_version):
             minikube_version=minikube_version
             )
 
-def setup_logging():
-    if os.environ['MINIKUBE_CLOUD_DEBUG']:
+def setup_logging(verbose):
+    if verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
+    else:
+        FORMAT = '%(message)s'
+        logging.basicConfig(
+                stream=sys.stdout,
+                level=logging.INFO,
+                format=FORMAT
+            )
 
 def main():
+    args = parser.get_argparser()
+    user_cfg, credentials = config.get_config(args.profile)
+
+    setup_logging(args.verbose)
+
     base_path = os.path.dirname(__file__)
     base_template_path = os.path.join(base_path, 'templates')
     template_path = os.path.join(base_template_path, 'ubuntu.j2')
-
-    args = parser.get_argparser()
-    user_cfg, credentials = config.get_config(args.profile)
 
     user_data = get_user_data(
         template_path,
