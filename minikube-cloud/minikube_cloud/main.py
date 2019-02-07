@@ -51,7 +51,8 @@ def main():
 
     base_path = os.path.dirname(__file__)
     base_template_path = os.path.join(base_path, 'templates')
-    template_path = os.path.join(base_template_path, 'ubuntu.j2')
+
+    template_path = os.path.join(base_template_path, user_cfg['image'] + '.j2')
 
     user_data = get_user_data(
         template_path,

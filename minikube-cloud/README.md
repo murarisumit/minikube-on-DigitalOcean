@@ -1,5 +1,7 @@
 # minikube-on-DigitalOcean
 
+### Pre-req 
+
 - Install `doctl`
 
 ```
@@ -28,46 +30,29 @@ Validating token: OK
 
 This will create the necessary directory structure and configuration file to store your credentials.
 
-
-- Install `kubectl`.
-
-```
-sudo apt-get update && sudo apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubectl
-```
-
-
-- Clone the git repo.
+### Installation
 
 ```
-git clone https://github.com/vishalcloudyuga/minikube-on-DigitalOcean
-cd minikube-on-DigitalOcean
+python setup.py install
 ```
 
-- Choose your kubernetes version.
+or
 
 ```
-git checkout tags/v1.13.0
-```
-Or
-```
-git checkout tags/v1.12.0
+pip install minikube-cloud
 ```
 
-- Start minikube.
+Move config and credentials file at `~/.config/minikube-cloud/config.ini` and `~/.config/minikube-cloud/credentials.ini`
+
+Run `minikube-cloud` with specific profile:
 
 ```
-bash minikube.sh <your-name> <ssh-key-id>
+minikube-cloud --profile prod
 ```
 
 - Start using kubernetes.
 
-```
-export KUBECONFIG=$(pwd)/kubeconfig
-```
+* Wait for instance to provision, then ssh into instance and get kubeconfig file from `/root/.kube/config`.
 
 - Verify the node.
 

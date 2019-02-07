@@ -51,7 +51,8 @@ def setup(config, credentials, user_data):
     load = droplet.load()
     ndroplet = digitalocean.Droplet(load.id, credentials['token'])
     logger.info("ip address for vm is: %s", load.ip_address)
-    logger.info("Use: scp root@%s:/var/lib/minikube/kubeconfig config.", load.ip_address)
+    logger.info("For ssh: ssh root@%s", load.ip_address)
+    logger.info("Use: scp root@%s:~/.kube/config config", load.ip_address)
 
 
 def test(config, credentials, user_data):
